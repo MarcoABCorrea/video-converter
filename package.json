@@ -1,7 +1,7 @@
 {
-  "name": "react-node-starter",
-  "version": "1.1.0",
-  "description": "an example for deploying a React + NodeJS app to Heroku",
+  "name": "video-converter",
+  "version": "1.0.0",
+  "description": "Project to convert videos.",
   "main": "server.js",
   "scripts": {
     "build": "webpack --config webpack.prod.config.js",
@@ -15,7 +15,7 @@
     "test:watchAll": "jest src/** --watchAll",
     "test:coverage:report": "open coverage/lcov-report/index.html"
   },
-  "author": "",
+  "author": "Marco Aurélio Batista Corrêa <marcoabcorrea@gmail.com.br> (https://github.com/MarcoABCorrea)",
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -32,6 +32,7 @@
     "raf": "^3.3.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-router": "^3.2.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.6.0"
