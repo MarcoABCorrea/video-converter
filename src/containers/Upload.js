@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
 import Footer from '../components/Footer';
+import axios, { post } from 'axios';
 
 export default class Upload extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      file: null
+    }
+
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.fileUpload = this.fileUpload.bind(this);
   }
 
-  handleSubmit (e) {
+  onFormSubmit(e) {
     e.preventDefault();
-    // const { url } = this.state;
-    // const curl = `${filestackAPI}/${API_KEY}/video_convert=preset:webm,aspect_mode:preserve/${url.substring(url.lastIndexOf('/') + 1)}`;
-    // // First we call the process API to start the trascoding and get the uuid
-    // try {
-    //   let response = await fetch(curl);
-    //   response = await response.json();
-    //   const server = await this.sendToServer(response.uuid);
-    //   hashHistory.replace('/');
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    this.fileUpload(this.state.file).then((response) => {
+      console.log(response.data);
+    })
+  }
+
+  onChange(e) {
+    this.setState({ file: e.target.files[0] })
+  }
+
+  fileUpload(file) {Î
+    let formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', 'file');
+
+    return axios({
+      method: 'post',
+      url: '/fileUpload',
+      data: formData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    });
   }
 
   render() {
@@ -34,7 +50,7 @@ export default class Upload extends Component {
               </h2>
             </div>
             <div className="panel-body">
-              <form name="document-form" onSubmit={this.handleSubmit}>
+              <form name="document-form" onSubmit={this.onFormSubmit}>
                 <div className="form-group">
                   <label htmlFor="title">Title</label>
                   <input
@@ -48,7 +64,7 @@ export default class Upload extends Component {
                 <div className="form-group">
                   <div className="input-group mb-3">
                     <div className="custom-file">
-                      <input type="file" onChange={this.handleUploadFile} />
+                      <input type="file" onChange={this.onChange} />
                     </div>
                   </div>
                 </div>
