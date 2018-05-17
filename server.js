@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const multer = require('multer');
+require('dotenv').config()
 const PORT = process.env.PORT || 8080;
 const client = require('zencoder')('8c230c19ec4535f22cc187e232cdb70e');
 app.engine('html', require('ejs').renderFile);
@@ -19,13 +20,13 @@ app.listen(PORT, error => (
 ));
 
 
-const options = { i: 'AKIAJOEYZBNCUJRT35VQ', k: 'cpQ1NmOeOB+FNH7MDbSLeUUlnIg5ENxw6i+5ldcu' };
+const options = { id: process.env.accessKeyId, key: process.env.secretAccessKey };
 // File Upload
 const fs = require('fs'),
   S3FS = require('s3fs'),
   s3fsImpl = new S3FS('marcoabc-video-converter/videos/', {
-    accessKeyId: options.i,
-    secretAccessKey: options.k
+    accessKeyId: options.id,
+    secretAccessKey: options.key
   });
 
 
