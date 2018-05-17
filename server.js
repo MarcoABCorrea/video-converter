@@ -4,6 +4,7 @@ const app = express();
 const multer = require('multer');
 const PORT = process.env.PORT || 8080;
 const client = require('zencoder')('8c230c19ec4535f22cc187e232cdb70e');
+app.engine('html', require('ejs').renderFile);
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
