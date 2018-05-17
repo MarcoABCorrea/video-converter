@@ -4,15 +4,19 @@ export default class Video extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            video: {
-                url: 'http://techslides.com/demos/sample-videos/small.mp4',
-                title: 'Video 1'
-            }
-        };
+        // this.state = {
+        //     video: {
+        //         url: 'http://techslides.com/demos/sample-videos/small.mp4',
+        //         title: 'Video 1'
+        //     }
+        // };
+        this.state = { video: {} };
     }
 
     render() {
+        if (!this.state.video.url) {
+            return (<div>deu não</div>);
+        }
         return (
             <div className="container" id="container">
                 <div className="embed-responsive embed-responsive-16by9 video-player">

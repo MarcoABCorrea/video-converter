@@ -1,12 +1,13 @@
+require('dotenv').config()
 const path = require('path');
 const express = require('express');
 const app = express();
 const multer = require('multer');
-require('dotenv').config()
 const PORT = process.env.PORT || 8080;
 const client = require('zencoder')('8c230c19ec4535f22cc187e232cdb70e');
-app.engine('html', require('ejs').renderFile);
 
+
+app.engine('html', require('ejs').renderFile);
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/', function (request, response) {
@@ -19,19 +20,14 @@ app.listen(PORT, error => (
     : console.info(`Listening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`)
 ));
 
-
-const options = { id: process.env.accessKeyId, key: process.env.secretAccessKey };
-// File Upload
 const fs = require('fs'),
   S3FS = require('s3fs'),
   s3fsImpl = new S3FS('marcoabc-video-converter/videos/', {
-    accessKeyId: options.id,
-    secretAccessKey: options.key
+    accessKeyId: process.env.accessKeyId,
+    secretAccessKey: process.env.secretAccessKey
   });
 
-
-
-
+// Sends the original file to S3 and triggers the Zencoder Job
 const uploadFile = function (req, res) {
   const file = req.file;
   const stream = fs.createReadStream(file.path);
@@ -53,35 +49,43 @@ const uploadFile = function (req, res) {
       ]
     }, function (err, data) {
       if (err) { console.log(err); return; }
-
-      console.log(data);
-
       res.status(200).end();
     });
   });
 };
 
+/** Upload */
 const upload = multer({ dest: 'upload/' });
 const type = upload.single('file');
-
 app.post('/fileUpload', type, uploadFile);
 
 
 
-var s3ls = require('s3-ls');
 
-var lister = s3ls({ bucket: 'marcoabc-video-converter' });
+var AWS = require('aws-sdk');
+AWS.config.update({
+  region: 'sa-east-1',
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey
+});
+var s3 = new AWS.S3();
 
-
-
+// Lists all videos into 'conversions' folder on S3
 app.get('/videosList', (req, res) => {
+  s3.listObjectsV2({ Bucket: 'marcoabc-video-converter', Prefix: 'conversions/'}, (err, data) => {
+    data.Contents.shift(); // Remove the folder from the response
+    data.Contents.map((video) => {
+      video.title = video.Key.replace("conversions/", "");
+      video.ETag = video.ETag.replace(/['"]+/g, '');
+    });
+    res.send(data.Contents);
+  });
+});
 
-  res.send([
-    {
-      id: 1, title: 'Video 1', status: 'Encodando'
-    },
-    {
-      id: 2, title: 'Video 2', status: 'Finalizado'
-    }
-  ]);
+// Lists video
+app.get('/getVideo', (req, res) => {
+  let key = 'conversions/1504106168.mp4';
+  s3.getObject({ Bucket: 'marcoabc-video-converter', Prefix: 'conversions/', key: key}, (err, data) => {
+    res.send(data.Contents);
+  });
 });
