@@ -2,15 +2,20 @@ import React from 'react';
 import VideoListItem from './VideoListItem';
 
 const VideoList = (props) => {
-    const videoItems = props.videos.map((video) => {
+    if(!props.videos.data) {
         return (
-            <VideoListItem
-                onVideoSelect={props.onVideoSelect}
-                video={video} />
+            <div>Nenhum vídeo</div>
+        );
+    }
+
+    const videoItems = props.videos.data.map((video) => {
+        return (
+            <VideoListItem video={video} />
         );
     });
+    
     return (
-        <ul className="col-md-4 list-group">
+        <ul className="col-lg-6 col-lg-offset-6 col-sm-12 col-sm-offset-0 list-group">
             {videoItems}
         </ul>
     );

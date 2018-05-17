@@ -1,46 +1,75 @@
 import React, { Component } from 'react';
 import Footer from '../components/Footer';
-import VideoList from '../components/VideoList';
-import Nav from '../components/Nav';
-import Video from './Video';
-// import { API } from '../config';
+import axios, { post } from 'axios';
 
 export default class Home extends Component {
 
   constructor(props) {
     super(props);
-    // Set the videoList to empty array
-    this.state = { videosList: [
-      { url: 'https://cdn.filestackcontent.com/SLaOvbGTR8asBBLCn1u9', 
-        title: 'marco 1' },
-        { url: 'https://cdn.filestackcontent.com/SLaOvbGTR8asBBLCn1u9', 
-        title: 'marco 2' }
-      ], 
-      
-      selectedVideo: {} };
+    this.state = {
+      file: null
+    }
+
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.fileUpload = this.fileUpload.bind(this);
   }
 
-  // async componentDidMount () {
-  //   // Calls GET /api/v1/videos to populate videosList
-  //   try {
-  //     const response = await fetch(API);
-  //     const videosList = await response.json();
-  //     this.setState({ videosList });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  onFormSubmit(e) {
+    e.preventDefault();
+    this.fileUpload(this.state.file).then((response) => {
+      console.log(response.data);
+    })
+  }
+
+  onChange(e) {
+    this.setState({ file: e.target.files[0] })
+  }
+
+  fileUpload(file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    formData.append('name', 'file');
+
+    return axios({
+      method: 'post',
+      url: '/fileUpload',
+      data: formData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    });
+  }
 
   render() {
-    const { videosList } = this.state;
     return (
-      <main className="container" id="container">
-        <div className="row" id="video-container">
-          <Video video={this.state.selectedVideo} />
-          <VideoList onVideoSelect={selectedVideo => this.setState({ selectedVideo })} videos={this.state.videosList} />
+      <div className="container" id="container">
+        <div className="col-md-offset-4 media-list" id="upload-container">
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h2 className="panel-title text-center">
+                <span/> Upload Video
+              </h2>
+            </div>
+            <div className="panel-body">
+              <form name="document-form" onSubmit={this.onFormSubmit}>
+                <div className="form-group">
+                  <div className="input-group mb-3">
+                    <div className="custom-file">
+                      <input type="file" onChange={this.onChange} />
+                    </div>
+                  </div>
+                </div>
+
+
+                <button
+                  className="btn btn-primary btn-block submit" type="submit">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
         <Footer />
-      </main>
+      </div>
     );
   }
 }

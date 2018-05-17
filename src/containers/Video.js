@@ -1,26 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Video = ({ video }) => {
-    if (!video.url) {
-        return <div className="col-md-8">Click a video to play it.</div>;
+export default class Video extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            video: {
+                url: 'http://techslides.com/demos/sample-videos/small.mp4',
+                title: 'Video 1'
+            }
+        };
     }
 
-    // const videoId = video.id.videoId;
-    // const url = `https://www.youtube.com/embed/${videoId}`;
-    return (
-        <div className="col-md-8">
-            <div className="embed-responsive embed-responsive-16by9">
-                <video controls>
-                    <source src={video.url} type="video/mp4" />
-                </video>
+    render() {
+        return (
+            <div className="container" id="container">
+                <div className="embed-responsive embed-responsive-16by9 video-player">
+                    <video controls>
+                        <source src={this.state.video.url} type="video/mp4" />
+                    </video>
+                </div>
+                <div className="video-info">
+                    <h4>{this.state.video.title}</h4>
+                </div>
             </div>
-            <div className="video-info">
-                <h4>{video.title}</h4>
-                {/* <p>{author}</p>
-                <p>{views} views • {uploadAt} hours ago</p> */}
-            </div>
-        </div>
-    );
+        );
+    }
 };
-
-export default Video;

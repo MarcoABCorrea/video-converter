@@ -4,12 +4,14 @@ import 'src/assets/stylesheets/base.scss';
 import { Router, Route, Link, browserHistory, IndexRoute } from 'react-router';
 import Layout from './components/Layout';
 import Home from "./containers/Home";
-import Upload from "./containers/Upload";
+import Videos from "./containers/Videos";
+import Video from "./containers/Video";
 
 ReactDOM.render(
     (<Router history={browserHistory}>
         <Route path="/" component={Layout}>
             <IndexRoute component={Home} />
-            <Route path="upload" component={Upload} />
+            <Route path="videos" component={Videos} />
+            <Route path="videos/:id" component={Video} />
         </Route>
     </Router>), document.getElementById('root'));

@@ -18,12 +18,13 @@ app.listen(PORT, error => (
 ));
 
 
+const options = { i: 'AKIAJOEYZBNCUJRT35VQ', k: 'cpQ1NmOeOB+FNH7MDbSLeUUlnIg5ENxw6i+5ldcu' };
 // File Upload
 const fs = require('fs'),
   S3FS = require('s3fs'),
   s3fsImpl = new S3FS('marcoabc-video-converter/videos/', {
-    accessKeyId: 'AKIAJICSJTQEP5W2UZZA',
-    secretAccessKey: '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'
+    accessKeyId: options.i,
+    secretAccessKey: options.k
   });
 
 
@@ -38,7 +39,6 @@ const uploadFile = function (req, res) {
         console.error(err);
       }
     });
-    // res.status(200).end();
     const fileNameExt = file.originalname.split(".")[0] + ".mp4";
     client.Job.create({
       "input": "s3://marcoabc-video-converter/videos/" + file.originalname,
@@ -49,9 +49,9 @@ const uploadFile = function (req, res) {
           "format": "mp4"
         }
       ]
-    }, function(err, data) {
+    }, function (err, data) {
       if (err) { console.log(err); return; }
-    
+
       console.log(data);
 
       res.status(200).end();
@@ -59,8 +59,27 @@ const uploadFile = function (req, res) {
   });
 };
 
-
 const upload = multer({ dest: 'upload/' });
 const type = upload.single('file');
 
 app.post('/fileUpload', type, uploadFile);
+
+
+
+var s3ls = require('s3-ls');
+
+var lister = s3ls({ bucket: 'marcoabc-video-converter' });
+
+
+
+app.get('/videosList', (req, res) => {
+
+  res.send([
+    {
+      id: 1, title: 'Video 1', status: 'Encodando'
+    },
+    {
+      id: 2, title: 'Video 2', status: 'Finalizado'
+    }
+  ]);
+});

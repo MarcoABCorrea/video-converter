@@ -6,7 +6,7 @@ const Nav = () => (
     <div className="container">
       <div className="navbar-header">
         <Link className="navbar-brand" to="/">Video Converter</Link>
-        <Link to="/upload">Upload</Link>
+        <Link to="/videos">Videos</Link>
       </div>
     </div>
   </nav>
