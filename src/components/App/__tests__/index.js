@@ -12,8 +12,3 @@ test('it should render the App component', () => {
 
   expect(wrapper.find('h1').text()).toEqual('Hello, World!');
 });
-
-it('should run a solid smoke test', () => {
-  // this test is intentionally failing
-  expect(true).toEqual(false);
-});
