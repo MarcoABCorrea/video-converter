@@ -19,7 +19,11 @@ export default class Video extends Component {
 
     render() {
         if (!this.state.video.url) {
-            return (<div>deu não</div>);
+            return (
+                <div className="container" id="container">
+                    <div>Carregando...</div>
+                </div>
+            );
         }
         return (
             <div className="container" id="container">

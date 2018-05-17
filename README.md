@@ -4,6 +4,10 @@ This project is using, among other technologies:
 
 React, Node, Zencoder, Amazon S3.
 
+## Live version
+
+https://marcoabc-video-converter.herokuapp.com/
+
 ## UP & RUNNING
 Install dependencies:
 ```
