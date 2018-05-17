@@ -12,6 +12,6 @@ ReactDOM.render(
         <Route path="/" component={Layout}>
             <IndexRoute component={Home} />
             <Route path="videos" component={Videos} />
-            <Route path="videos/:id" component={Video} />
+            <Route path="videos/:etag" component={Video} />
         </Route>
     </Router>), document.getElementById('root'));

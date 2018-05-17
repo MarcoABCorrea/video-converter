@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
+import axios, { get } from 'axios';
 
 export default class Video extends Component {
 
     constructor(props) {
         super(props);
-        // this.state = {
-        //     video: {
-        //         url: 'http://techslides.com/demos/sample-videos/small.mp4',
-        //         title: 'Video 1'
-        //     }
-        // };
         this.state = { video: {} };
+        this.getVideo();
+    }
+
+    getVideo() {
+        axios.get('/getVideo', { params: { etag: this.props.params.etag } })
+            .then((res) => {
+                this.setState({ video: { url: res.data.url, title: res.data.title } });
+            })
+            .catch(err => console.log(err));
     }
 
     render() {

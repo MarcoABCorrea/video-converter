@@ -72,7 +72,8 @@ var s3 = new AWS.S3();
 
 // Lists all videos into 'conversions' folder on S3
 app.get('/videosList', (req, res) => {
-  s3.listObjectsV2({ Bucket: 'marcoabc-video-converter', Prefix: 'conversions/'}, (err, data) => {
+  const params = { Bucket: 'marcoabc-video-converter', Prefix: 'conversions/' };
+  s3.listObjectsV2(params, (err, data) => {
     data.Contents.shift(); // Remove the folder from the response
     data.Contents.map((video) => {
       video.title = video.Key.replace("conversions/", "");
@@ -84,8 +85,15 @@ app.get('/videosList', (req, res) => {
 
 // Lists video
 app.get('/getVideo', (req, res) => {
-  let key = 'conversions/1504106168.mp4';
-  s3.getObject({ Bucket: 'marcoabc-video-converter', Prefix: 'conversions/', key: key}, (err, data) => {
-    res.send(data.Contents);
+  const etag = '"' + req.query.etag + '"';
+
+  s3.listObjectsV2({ Bucket: 'marcoabc-video-converter', Prefix: 'conversions/' }, (err, data) => {
+    const video = data.Contents.filter(vid => vid.ETag === etag)[0];
+    const params = { Bucket: 'marcoabc-video-converter', Key: video.Key };
+
+    s3.getSignedUrl('getObject', params, function (error, url) {
+      const title = video.Key.replace("conversions/", "");
+      res.send({url, title});
+    });
   });
 });
