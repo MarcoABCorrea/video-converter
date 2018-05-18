@@ -14,10 +14,10 @@ export default class Videos extends Component {
 
   populateVideos() {
     axios.get('/videosList')
-    .then(videosList => {
-      this.setState({ videosList });
-    })
-    .catch(err => console.log(err));
+      .then(videosList => {
+        this.setState({ videosList });
+      })
+      .catch(err => console.log(err));
   }
 
   render() {

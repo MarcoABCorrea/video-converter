@@ -17,9 +17,7 @@ export default class Home extends Component {
 
   onFormSubmit(e) {
     e.preventDefault();
-    this.fileUpload(this.state.file).then((response) => {
-      console.log(response.data);
-    })
+    this.fileUpload(this.state.file);
   }
 
   onChange(e) {
@@ -46,7 +44,7 @@ export default class Home extends Component {
           <div className="panel panel-default">
             <div className="panel-heading">
               <h2 className="panel-title text-center">
-                <span/> Upload Video
+                <span /> Upload Video
               </h2>
             </div>
             <div className="panel-body">
