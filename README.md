@@ -1,5 +1,9 @@
 # Video Convert Project
 
+This project allows to updload a video to Amazon server and convert it using zencoder.
+
+## Stack & Components
+
 This project is using, among other technologies:
 
 React, Node, Zencoder, Amazon S3.
