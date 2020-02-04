@@ -1,6 +1,6 @@
 # Video Convert Project
 
-This project allows to updload a video to Amazon server and convert it using zencoder.
+This project allows to upload a video to Amazon server and convert it using zencoder.
 
 ## Stack & Components
 
