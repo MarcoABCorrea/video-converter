@@ -18,7 +18,7 @@
   "author": "Marco Aurélio Batista Corrêa <marcoabcorrea@gmail.com.br> (https://github.com/MarcoABCorrea)",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.241.1",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
